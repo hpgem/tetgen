@@ -16,6 +16,16 @@ jobs:
           make tetgen --directory src
           mv src/tetgen tetgen-linux
 
+      - name: Test
+        shell: bash -l {0}
+        run: |
+          ./tetgen-linux
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          path: tetgen-linux
+
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
