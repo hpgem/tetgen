@@ -4,7 +4,7 @@ on: push
 
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
+    name: Build on ${{ runner.os }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,6 +24,7 @@ jobs:
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
+          name: tetgen-${{ runner.os }}
           path: tetgen-linux
 
       - name: Release
