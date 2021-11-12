@@ -13,8 +13,7 @@ jobs:
       - name: Build
         shell: bash -l {0}
         run: |
-          cd src
-          make tetgen
+          make tetgen --directory src
           mv src/tetgen tetgen-linux
 
       - name: Release
