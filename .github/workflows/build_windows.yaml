@@ -1,4 +1,4 @@
-name: Build on Mac/Linux
+name: Build on Windows
 
 on: push
 
@@ -8,23 +8,25 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: ['ubuntu-latest', 'macos-latest']
+        os: ['windows-latest']
     
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       
       - name: Build
-        shell: bash -l {0}
+        shell: pwsh
         run: |
-          make tetgen --directory src
-          mv src/tetgen tetgen
-          zip tetgen-${{ runner.os }} tetgen src/*
+          cd src
+          ./make_win.PS1
+          cd ..
+          mv src/tetgen.exe tetgen.exe
+          Compress-Archive src/, tetgen.exe tetgen-${{ runner.os }}.zip
 
       - name: Test
-        shell: bash -l {0}
+        shell: pwsh
         run: |
-          ./tetgen
+          ./tetgen.exe
 
       - name: Upload binary
         uses: actions/upload-artifact@v2
@@ -37,6 +39,3 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: tetgen-${{ runner.os }}.zip
-      
-
-
