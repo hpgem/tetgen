@@ -14,24 +14,25 @@ jobs:
         shell: bash -l {0}
         run: |
           make tetgen --directory src
-          mv src/tetgen tetgen-${{ runner.os }}
+          mv src/tetgen tetgen
+          zip tetgen-${{ runner.os}} tetgen src/*
 
       - name: Test
         shell: bash -l {0}
         run: |
-          ./tetgen-${{ runner.os }}
+          ./tetgen
 
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: tetgen-${{ runner.os }}
-          path: tetgen-${{ runner.os }}
+          name: tetgen-${{ runner.os}}.zip
+          path: tetgen-${{ runner.os}}.zip
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: tetgen-${{ runner.os }}
+          files: tetgen-${{ runner.os}}.zip
       
 
 
