@@ -1,0 +1,27 @@
+name: Build on Linux
+
+on: push
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Build
+        shell: bash -l {0}
+        run: |
+          cd src
+          make tetgen
+          mv src/tetgen tetgen-linux
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: tetgen-linux
+      
+
+
