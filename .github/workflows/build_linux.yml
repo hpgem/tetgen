@@ -1,11 +1,15 @@
-name: Build on Linux
+name: Build on Mac/Linux
 
 on: push
 
 jobs:
   build:
-    name: Build
-    runs-on: ubuntu-latest
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ['ubuntu-latest', 'macos-latest']
+    
     steps:
       - name: Checkout
         uses: actions/checkout@v2
